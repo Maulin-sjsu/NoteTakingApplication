@@ -12,6 +12,9 @@ const addNote = (title, body) =>
 
     const dupnote = notes.find( (note) => note.title === title)
 
+    //debugger
+    //command to test : node --inspect-brk app.js  add --title='Maulin' --body='FirstFile'
+
 
     if(dupnote)
     {
