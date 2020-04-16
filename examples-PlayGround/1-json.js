@@ -25,3 +25,16 @@ data.age = 25
 const dataJSONUpdated = JSON.stringify(data)
 fs.writeFileSync('person.JSON', dataJSONUpdated)
 
+// const square = function(x){
+//     return x*x
+// }
+
+// const cube = (x) => {
+//     return x*x*x
+// }
+
+// const sum = (x,y) => x+y 
+
+// console.log(square(3))
+// console.log(cube(3))
+// console.log(sum(2,5))

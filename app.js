@@ -7,7 +7,6 @@ const noteutilities = require('./note.js')
 
 // Customize yargs version
 yargs.version('1.1.0')
-
 // Create add command
 yargs.command({
     command: 'add',
@@ -24,9 +23,8 @@ yargs.command({
             type: 'string'
         }
     },
-    handler: function (argv) {
-        noteutilities.addNote(argv.title,argv.body)
-    }
+    handler: (argv) => noteutilities.addNote(argv.title,argv.body)
+
 })
 
 // Create remove command
@@ -40,17 +38,16 @@ yargs.command({
             type: 'string'
         }
     },
-    handler: function (argv) {
-        noteutilities.removeNotes(argv.title)
-    }
+    handler: (argv) => noteutilities.removeNotes(argv.title)
+    
 })
 
 // Create list command
 yargs.command({
     command: 'list',
     describe: 'List your notes',
-    handler: function () {
-        console.log('Listing out all notes')
+    handler() {
+        noteutilities.listNotes()
     }
 })
 
@@ -58,9 +55,15 @@ yargs.command({
 yargs.command({
     command: 'read',
     describe: 'Read a note',
-    handler: function () {
-        console.log('Reading the Note')
-    }
+    builder: {
+        title: {
+            describe: 'Title of the Note : ',
+            demandOption: true,
+            type: 'string' 
+        }
+    },
+    handler: (argv) => noteutilities.readNote(argv.title)
+
 })
 
 yargs.parse()

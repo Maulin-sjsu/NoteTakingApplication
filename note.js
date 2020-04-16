@@ -1,18 +1,24 @@
 const fs = require('fs')
 const chalk = require('chalk');
-const getNotes = function(){
+
+const getNotes = () => {
     return 'Your Notes...'
 }
 
-const addNote = function(title, body)
+const addNote = (title, body) =>
 {
     const notes = loadNotes()
-    const duplicatenotes = notes.filter(function(note){
-        return note.title === title
-    })
+    //const duplicatenotes = notes.filter( (note) => note.title === title)
 
-    if(duplicatenotes.length === 0)
+    const dupnote = notes.find( (note) => note.title === title)
+
+
+    if(dupnote)
     {
+        console.log(chalk.red.inverse('Note title taken ! '))
+        
+    }
+    else{
         notes.push({
             title: title,
             body: body
@@ -20,18 +26,15 @@ const addNote = function(title, body)
         saveNotes(notes)
         console.log(chalk.green.inverse('Note Added'))
     }
-    else{
-        console.log(chalk.red.inverse('Note title taken ! '))
-    }
     
 }
 
-const saveNotes = function(notes){
+const saveNotes = (notes) => {
     const dataJSON = JSON.stringify(notes)
     fs.writeFileSync('notes.json', dataJSON)
 }
 
-const loadNotes = function(){
+const loadNotes = ()=>{
     try{
         const dataBuffer = fs.readFileSync('notes.json')
         const dataJSON = dataBuffer.toString()
@@ -41,11 +44,9 @@ const loadNotes = function(){
     }
 }
 
-const removeNotes = function(title){
+const removeNotes = (title)=>{
     const notes = loadNotes()
-    const notestokeep = notes.filter(function(note){
-        return note.title !== title
-    })
+    const notestokeep = notes.filter((note) => note.title !== title)
     if(notes.length !== notestokeep.length)
     {
         saveNotes(notestokeep)
@@ -56,8 +57,33 @@ const removeNotes = function(title){
     
 }
 
+const listNotes = () => {
+    const notes = loadNotes()
+    console.log(chalk.blue.inverse('YourNotes'))
+
+    notes.forEach((note) => {
+        console.log(note.title)
+    });
+}
+
+const readNote = (title) =>{
+    const notes = loadNotes()
+    const reqnote = notes.find((note) => note.title === title)
+    if(reqnote)
+    {
+        console.log(chalk.inverse(reqnote.title))
+        console.log(reqnote.body)
+    }else{
+        console.log(chalk.red.inverse('Note not found'))
+    }
+    
+    //console.log(dupnote.body)
+}
+
 module.exports = {
     getNotes: getNotes,
     addNote: addNote,
-    removeNotes: removeNotes
+    removeNotes: removeNotes,
+    listNotes: listNotes,
+    readNote: readNote
 }
